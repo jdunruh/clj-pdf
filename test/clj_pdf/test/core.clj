@@ -67,7 +67,7 @@
       :top-margin    20
       :bottom-margin 25
       :pages true
-      :font  {:size 11}  
+      :font  {:size 11}
       :size          :a4
       :orientation   "landscape"
       :subject "Some subject"
@@ -149,6 +149,26 @@
        [:cell [:phrase {:style :italic :size 18 :family :halvetica :color [200 55 221]} "Hello Clojure!"]]
        "baz"]
       ["foo1" [:cell {:color [100 10 200]} "bar1"] "baz1"]
+      ["foo2" "bar2" "baz2"]]]
+    "table.pdf"))
+
+(deftest pdf-table
+  (eq?
+    [{}
+     [:pdf-table {:header ["Row 1" "Row 2" "Row 3"] :width 50 :border false :cell-border false :num-cols 3} [20 20 20]
+      [[:pdf-cell {:colspan 2} "Foo"] "Bar"]
+      ["foo1" "bar1" "baz1"]
+      ["foo2" "bar2" "baz2"]]
+
+     [:pdf-table {:border-width 10 :header ["Row 1" "Row 2" "Row 3"] :num-cols 3} [20 20 20] ["foo" "bar" "baz"] ["foo1" "bar1" "baz1"] ["foo2" "bar2" "baz2"]]
+
+     [:pdf-table {:border false :header [{:color [100 100 100]} "Singe Header"] :num-cols 3}  [20 20 20] ["foo" "bar" "baz"] ["foo1" "bar1" "baz1"] ["foo2" "bar2" "baz2"]]
+
+     [:pdf-table {:cell-border false :header [{:color [100 100 100]} "Row 1" "Row 2" "Row 3"] :cellSpacing 20 :header-color [100 100 100] :num-cols 3} [20 20 20]
+      ["foo"
+       [:pdf-cell [:phrase {:style :italic :size 18 :family :halvetica :color [200 55 221]} "Hello Clojure!"]]
+       "baz"]
+      ["foo1" [:pdf-cell {:color [100 10 200]} "bar1"] "baz1"]
       ["foo2" "bar2" "baz2"]]]
     "table.pdf"))
 

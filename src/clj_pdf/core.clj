@@ -330,6 +330,11 @@
                       border-width-left
                       border-width-right
                       border-width-top
+                      padding
+                      padding-top
+                      padding-right
+                      padding-bottom
+                      padding-left
                       rotation]} (second element)
               [r g b] color]
 
@@ -345,6 +350,11 @@
           (if border-width-left (.setBorderWidthLeft c (float border-width-left)))
           (if border-width-right (.setBorderWidthRight c  (float border-width-right)))
           (if border-width-top (.setBorderWidthTop c (float border-width-top)))
+          (if padding (.setPadding c (int padding)))
+          (if padding-right (.setPaddingRight c (int padding-right)))
+          (if padding-left (.setPaddingLeft c (int padding-left)))
+          (if padding-bottom (.setPaddingBottom c (int padding-bottom)))
+          (if padding-top (.setPaddingTop c (int padding-top)))
           (if rotation (.setRotation c (int rotation)))
           (.setHorizontalAlignment c (get-alignment align))))
 
