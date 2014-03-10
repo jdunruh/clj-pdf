@@ -47,6 +47,9 @@
 (defn- get-alignment [align]
   (condp = (when align (name align)) "left" 0, "center" 1, "right" 2, "justified", 3, 0))
 
+(defn- get-vertical-alignment [valign]
+  (condp = (when valign (name valign)) "top" 4, "middle" 5, "bottom" 6, 0))
+
 (defn- set-background [element {:keys [background]}]
   (when background
     (let [[r g b] background] (.setBackground element (Color. r g b)))))
@@ -184,7 +187,6 @@
     (if indent (.setIndentationLeft paragraph (float indent)))
     (if leading (.setLeading paragraph (float leading)))
     (if align (.setAlignment paragraph (get-alignment align)))
-
     (doseq [item content]
       (.add paragraph
         (make-section
@@ -335,6 +337,7 @@
                       padding-right
                       padding-bottom
                       padding-left
+                      valign
                       rotation]} (second element)
               [r g b] color]
 
@@ -356,6 +359,7 @@
           (if padding-bottom (.setPaddingBottom c (int padding-bottom)))
           (if padding-top (.setPaddingTop c (int padding-top)))
           (if rotation (.setRotation c (int rotation)))
+          (if valign (.setVerticalAlignment c (get-vertical-alignment valign)))
           (.setHorizontalAlignment c (get-alignment align))))
 
       (if (string? content) c (doto c (.addElement (make-section meta content)))))
