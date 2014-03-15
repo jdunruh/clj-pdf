@@ -433,7 +433,19 @@
 
     tbl))
 
-(defn- pdf-table [{:keys [color spacing-before spacing-after cell-border bounding-box num-cols horizontal-align title table-events]
+(defn- pdf-table [{:keys [color
+                          spacing-before
+                          spacing-after
+                          cell-border
+                          bounding-box
+                          num-cols
+                          horizontal-align
+                          header-rows
+                          footer-rows
+                          title
+                          width
+                          locked
+                          table-events]
                   :as meta}
                   widths
                   & rows]
@@ -447,7 +459,14 @@
     (if bounding-box
       (let [[x y] bounding-box]
         (.setWidthPercentage tbl (float-array widths) (make-section [:rectangle x y])))
-      (.setWidths tbl (float-array widths)))
+      (if width (do
+          (.setTotalWidth tbl (float width))
+          (.setLockedWidth tbl true)
+          (.setWidths tbl (float-array widths)))
+        (if locked (do
+            (.setTotalWidth tbl (float-array widths))
+            (.setLockedWidth tbl true))
+          (.setWidths tbl (float-array widths)))))
 
     (doseq [table-event table-events]
       (.setTableEvent tbl table-event))
@@ -458,6 +477,8 @@
     (if color (let [[r g b] color] (.setBackgroundColor tbl (new Color (int r) (int g) (int b)))))
     (if spacing-before (.setSpacingBefore tbl (float spacing-before)))
     (if spacing-after (.setSpacingAfter tbl (float spacing-after)))
+    (if header-rows (.setHeaderRows tbl (int header-rows)))
+    (if footer-rows (.setFooterRows tbl (int footer-rows)))
 
     (.setHorizontalAlignment tbl (get-alignment horizontal-align))
 
